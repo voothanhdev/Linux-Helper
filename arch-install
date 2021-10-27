@@ -20,10 +20,10 @@ printf "\n\n"
 # Set hostname
 echo "${HOST_NAME}" >/etc/hostname
 printf "
-        127.0.0.1   localhost
-        ::1         localhost
-        127.0.1.1   %s
-        " "${HOST_NAME}" >>/etc/hosts
+127.0.0.1   localhost
+::1         localhost
+127.0.1.1   %s
+" "${HOST_NAME}" >>/etc/hosts
 
 # Set language
 sed -i 's/#en_US\.UTF-8 UTF-8/en_US\.UTF-8 UTF-8/g' /etc/locale.gen
@@ -46,9 +46,7 @@ mkinitcpio -P
 bootctl --path=/boot install
 cp "${LIVE_PATH}/includes/boot-loader.conf" /boot/loader/loader.conf
 cp "${LIVE_PATH}/includes/arch.conf" /boot/loader/entries/arch.conf
-cp "${LIVE_PATH}/includes/arch-fallback.conf" /boot/loader/entries/arch-fallback.conf
 sed -i "s/%ROOT_LABEL%/${ROOT_LABEL}/g" /boot/loader/entries/arch.conf
-sed -i "s/%ROOT_LABEL%/${ROOT_LABEL}/g" /boot/loader/entries/arch-fallback.conf
 
 if [[ ${INSTALL_BASE} -eq 1 ]]; then
     echo ">>>>>>>>>>>>>>>>>>>>>>>INSTALL BASE PACKAGE<<<<<<<<<<<<<<<<<<<<<<<<"
@@ -225,17 +223,6 @@ if [[ ${INSTALL_DOCKER} -eq 1 ]]; then
             -o /usr/local/bin/docker-compose
         sudo chmod +x /usr/local/bin/docker-compose
         sudo usermod -aG docker "${USERNAME}"
-        sudo systemctl enable docker
-        sudo systemctl start docker
-        printf "
-        # Docker alias
-        alias redis=\"docker-compose exec redis\"
-        alias m2=\"docker-compose exec -u www php m2\"
-        alias magento=\"docker-compose exec -u www php bin/magento\"
-        alias artisan=\"docker-compose exec -u www php php artisan\"
-        alias php=\"docker-compose exec -u www php php\"
-        alias composer=\"docker-compose exec -u www php composer\"
-        " >> "/home/${USERNAME}/.zshrc " 2>&1
     } >>~/arch-install.log 2>&1
 
     kill ${pid}
@@ -262,9 +249,9 @@ if [[ ${INSTALL_OH_MY_ZSH} -eq 1 ]]; then
         git clone https://github.com/romkatv/powerlevel10k.git \
             "${ZSH_CUSTOM:-/home/${USERNAME}/.oh-my-zsh/custom}/themes/powerlevel10k"
         git clone https://github.com/zsh-users/zsh-autosuggestions \
-            "${ZSH_CUSTOM:-~/home/${USERNAME}/.oh-my-zsh/custom}/plugins/zsh-autosuggestions"
+            "${ZSH_CUSTOM:-/home/${USERNAME}/.oh-my-zsh/custom}/plugins/zsh-autosuggestions"
         git clone https://github.com/zsh-users/zsh-syntax-highlighting.git \
-            "${ZSH_CUSTOM:-~/home/${USERNAME}/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting"
+            "${ZSH_CUSTOM:-/home/${USERNAME}/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting"
 
         cp "${LIVE_PATH}/includes/.zshrc" "/home/${USERNAME}/"
         kill ${pid}

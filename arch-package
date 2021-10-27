@@ -112,9 +112,9 @@ if [[ ${INSTALL_OH_MY_ZSH} -eq 1 ]]; then
 	      git clone https://github.com/romkatv/powerlevel10k.git \
           "${ZSH_CUSTOM:-/home/${USERNAME}/.oh-my-zsh/custom}/themes/powerlevel10k"
         git clone https://github.com/zsh-users/zsh-autosuggestions \
-          "${ZSH_CUSTOM:-~/home/${USERNAME}/.oh-my-zsh/custom}/plugins/zsh-autosuggestions"
+          "${ZSH_CUSTOM:-/home/${USERNAME}/.oh-my-zsh/custom}/plugins/zsh-autosuggestions"
         git clone https://github.com/zsh-users/zsh-syntax-highlighting.git \
-          "${ZSH_CUSTOM:-~/home/${USERNAME}/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting"
+          "${ZSH_CUSTOM:-/home/${USERNAME}/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting"
 
         cp "${LIVE_PATH}/includes/.zshrc" "/home/${USERNAME}/"
         kill ${pid}
@@ -199,17 +199,6 @@ if [[ ${INSTALL_DOCKER} -eq 1 ]]; then
             -o /usr/local/bin/docker-compose
         sudo chmod +x /usr/local/bin/docker-compose
         sudo usermod -aG docker "${USERNAME}"
-        sudo systemctl enable docker
-        sudo systemctl start docker
-        printf "
-        # Docker alias
-        alias redis=\"docker-compose exec redis\"
-        alias mgt=\"docker-compose exec -u www php m2\"
-        alias magento=\"docker-compose exec -u www php bin/magento\"
-        alias artisan=\"docker-compose exec -u www php php artisan\"
-        alias php=\"docker-compose exec -u www php php\"
-        alias composer=\"docker-compose exec -u www php composer\"
-        " >> ~/.zshrc 2>&1
     } >> ~/arch-install.log 2>&1
 
     kill ${pid}
@@ -225,27 +214,7 @@ if [[ ${INSTALL_KDE} -eq 1 ]]; then
     {
         printf "\ny" | sudo pacman -S \
             plasma \
-            sddm \
-            ark \
-            konsole \
-            yakuake \
-            sweeper \
-            dolphin \
-            dolphin-plugins \
-            kdeplasma-addons \
-            networkmanager \
-            openconnect \
-            networkmanager-openconnect \
-            speedcrunch \
-            kdeconnect \
-            kfind \
-            kwalletmanager \
-            kinfocenter \
-            filelight \
-            gwenview \
-            kipi-plugins \
-            redshift \
-            ntfs-3g
+            kde-applications
         sudo systemctl enable sddm
         sudo systemctl enable NetworkManager
     } >> ~/arch-install.log 2>&1
