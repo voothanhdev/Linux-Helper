@@ -1,0 +1,3 @@
+#!/bin/bash
+useradd -mg users -G "${USERGROUPS}" -s /bin/zsh "${USERNAME}"
+echo "${USER_PASS}" | passwd "${USERNAME}"

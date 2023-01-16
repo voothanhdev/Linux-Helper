@@ -1,0 +1,25 @@
+#!/bin/bash
+echo "INSTALL OH MY ZSH>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
+spin '----> Installing' &
+pid=$!
+echo "PID = ${pid}"
+
+{
+    rm "/home/${USERNAME}/.oh-my-zsh"
+    # Install oh my zsh
+    echo "${USER_PASS}" | su - "${USERNAME}" -c \
+        "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+
+    # install themes and extensions
+    git clone https://github.com/romkatv/powerlevel10k.git \
+        "${ZSH_CUSTOM:-/home/${USERNAME}/.oh-my-zsh/custom}/themes/powerlevel10k"
+    git clone https://github.com/zsh-users/zsh-autosuggestions \
+        "${ZSH_CUSTOM:-/home/${USERNAME}/.oh-my-zsh/custom}/plugins/zsh-autosuggestions"
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git \
+        "${ZSH_CUSTOM:-/home/${USERNAME}/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting"
+
+    cp "${LIVE_PATH}/../includes/.zshrc" "/home/${USERNAME}/"
+    kill ${pid}
+} >> /var/log/arch-install.log 2>&1
+
+printf "\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<Install base package done.\n\n"

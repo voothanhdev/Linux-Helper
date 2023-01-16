@@ -1,0 +1,55 @@
+#!/bin/bash
+echo "INSTALL BASE PACKAGE>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
+spin 'Installing git, vim, curl, zsh, yajl, p7zip, unrar, wget: ' &
+pid=$!
+echo "PID = ${pid}"
+{
+    pacman -Suy git vim curl zsh yajl p7zip unrar wget
+    kill ${pid}
+} >> /var/log/arch-install.log 2>&1
+
+printf "\n\n"
+
+spin 'Installing screenfetch: ' &
+pid=$!
+echo "PID = ${pid}"
+{
+    sudo curl -L https://git.io/vaHfR -o /usr/local/bin/screenfetch
+    sudo chmod +x /usr/local/bin/screenfetch
+    kill ${pid}
+} >> /var/log/arch-install.log 2>&1
+
+printf "\n\n"
+
+spin 'Installing Yaourt : ' &
+pid=$!
+echo "PID = ${pid}"
+{
+    git clone https://aur.archlinux.org/package-query.git
+    git clone https://aur.archlinux.org/yaourt.git
+    cd package-query && echo y | makepkg -si
+    cd ..
+    cd yaourt && echo y | makepkg -si
+    cd ..
+    rm -rf package-query
+    rm -rf yaourt
+    kill ${pid}
+} >> /var/log/arch-install.log 2>&1
+
+spin 'Update git config : ' &
+pid=$!
+echo "PID = ${pid}"
+
+{
+    if [[ ${GIT_USER} != '' ]]; then
+        git config --global user.name "$GIT_USER"
+    fi
+    if [[ ${GIT_EMAIL} != '' ]]; then
+        git config --global user.email "$GIT_EMAIL"
+    fi
+    git config --global core.filemode false
+
+    kill ${pid}
+} >> /var/log/arch-install.log 2>&1
+
+printf "\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<Install base package done.\n\n"

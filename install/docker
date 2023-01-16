@@ -1,0 +1,13 @@
+#!/bin/bash
+echo "INSTALL DOCKER>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
+spin '----> Installing' &
+pid=$!
+echo "PID = ${pid}"
+
+{
+    echo y | sudo pacman -S docker docker-compose docker-buildx
+    usermod -aG docker "${USERNAME}"
+    kill ${pid}
+} >> /var/log/arch-install.log 2>&1
+
+printf "\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<Install docker done.\n\n"

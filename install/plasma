@@ -1,0 +1,36 @@
+#!/bin/bash
+echo "INSTALL KDE PLASMA>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
+spin 'Installing' &
+pid=$!
+echo "PID = ${pid}"
+
+{
+    printf "\ny" | pacman -S xorg-server
+    printf "\ny" | pacman -S \
+        plasma-desktop \
+        sddm \
+        ark \
+        konsole \
+        yakuake \
+        sweeper \
+        dolphin \
+        dolphin-plugins \
+        kdeplasma-addons \
+        networkmanager \
+        openconnect \
+        networkmanager-openconnect \
+        speedcrunch \
+        spectacle \
+        kdeconnect \
+        kfind \
+        kwalletmanager \
+        kinfocenter \
+        filelight \
+        gwenview \
+        kipi-plugins \
+        redshift
+    systemctl enable sddm
+    systemctl enable NetworkManager
+} >> /var/log/arch-install.log 2>&1
+
+printf "\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<Install KDE done.\n\n"

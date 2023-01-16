@@ -1,0 +1,79 @@
+#!/bin/bash
+echo "INSTALL INTELIJ APP >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
+if [[ ${INSTALL_PHP_STORM} -eq 1 ]]; then
+    spin '------> Installing PHPStorm' &
+    pid=$!
+    echo "PID = ${pid}"
+
+    {
+        url="https://download.jetbrains.com/product?code=PS&latest&distribution=linux"
+        wget -O phpstorm.tar.gz "${url}"
+        mkdir -p phpstorm
+        tar -zxvf phpstorm.tar.gz -C phpstorm
+        mv phpstorm /opt/
+        rm phpstorm.tar.gz
+
+        kill ${pid}
+    } >> /var/log/arch-install.log 2>&1
+
+    printf "\nPHPStorm is installed!\n\n"
+fi
+
+if [[ ${INSTALL_DATA_GRIP} -eq 1 ]]; then
+    spin '------> Installing DataGrip' &
+    pid=$!
+    echo "PID = ${pid}"
+
+    {
+        url="https://download.jetbrains.com/product?code=DG&latest&distribution=linux"
+        wget -O datagrip.tar.gz "${url}"
+        mkdir -p datagrip
+        tar -zxvf datagrip.tar.gz -C datagrip
+        mv datagrip /opt/
+        rm datagrip.tar.gz
+
+        kill ${pid}
+    } >> /var/log/arch-install.log 2>&1
+
+    printf "\nDataGrip is installed!\n\n"
+fi
+
+if [[ ${INSTALL_INTELIJ_IDEA} -eq 1 ]]; then
+    spin '------> Installing Intelij Idea' &
+    pid=$!
+    echo "PID = ${pid}"
+
+    {
+        url="https://download.jetbrains.com/product?code=IIU&latest&distribution=linux"
+        wget -O idea.tar.gz "${url}"
+        mkdir -p idea
+        tar -zxvf idea.tar.gz -C idea
+        mv idea /opt/
+        rm idea.tar.gz
+
+        kill ${pid}
+    } >> /var/log/arch-install.log 2>&1
+
+    printf "\nIntelij Idea is installed!\n\n"
+fi
+
+if [[ ${INSTALL_WEB_STORM} -eq 1 ]]; then
+    spin '------> Installing Intelij Idea' &
+    pid=$!
+    echo "PID = ${pid}"
+
+    {
+        url="https://download.jetbrains.com/product?code=WS&latest&distribution=linux"
+        wget -O webstorm.tar.gz "${url}"
+        mkdir -p webstorm
+        tar -zxvf webstorm.tar.gz -C webstorm
+        mv webstorm /opt/
+        rm webstorm.tar.gz
+
+        kill ${pid}
+    } >> /var/log/arch-install.log 2>&1
+
+    printf "\nIntelij Idea is installed!\n\n"
+fi
+
+printf "\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<Install docker done.\n\n"
